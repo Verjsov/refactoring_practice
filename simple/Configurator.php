@@ -1,15 +1,8 @@
 <?php
 
-class MailConfigurator
+class MailConfigurator implements ConfigurationInterface
 {
-    private $settings;
-
-    private $configuration;
-
-    public function setConnection($settings)
-    {
-        $this->settings = $settings;
-    }
+    use ConnectionTrait;
 
     public function getSender()
     {
@@ -23,16 +16,9 @@ class MailConfigurator
     }
 }
 
-class DatabaseConfigurator
+class DatabaseConfigurator implements ConfigurationInterface
 {
-    private $settings;
-
-    private $configuration;
-
-    public function setConnection($settings)
-    {
-        $this->settings = $settings;
-    }
+    use ConnectionTrait;
 
     public function getDriver()
     {
@@ -48,16 +34,9 @@ class DatabaseConfigurator
     }
 }
 
-class CacheConfigurator
+class CacheConfigurator implements ConfigurationInterface
 {
-    private $settings;
-
-    private $configuration;
-
-    public function setConnection($settings)
-    {
-        $this->settings = $settings;
-    }
+    use ConnectionTrait;
 
     public function getStorage()
     {

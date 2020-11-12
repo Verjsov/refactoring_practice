@@ -15,6 +15,13 @@ class Tester
         return 'testing';
     }
 }
+class Designer
+{
+    public function draw()
+    {
+        return 'drawing';
+    }
+}
 
 /** Что если добавить еще класс Designer с методом draw() **/
 
@@ -26,8 +33,11 @@ class ProjectManagement
             $member->code();
         } elseif ($member instanceof Tester) {
             $member->test();
-        };
-        throw new Exception('Invalid input member');
+        } elseif ($member instanceof Designer) {
+            $member->draw();
+        } else {
+            throw new Exception('Invalid input member');
+        }
     }
 }
 

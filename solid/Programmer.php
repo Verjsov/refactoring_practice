@@ -1,14 +1,24 @@
 <?php
 
 //Hint - Interface Segregation Principle
-interface Workable
+interface CanCodeInterface
 {
     public function canCode();
+}
+interface DevelopmentInterface
+{
     public function code();
+}
+interface TesterInterface
+{
     public function test();
 }
+interface ProjectInterface
+{
+    public function createNew();
+}
 
-class Programmer implements Workable
+class Programmer implements CanCodeInterface,DevelopmentInterface
 {
     public function canCode()
     {
@@ -24,7 +34,7 @@ class Programmer implements Workable
     }
 }
 
-class Tester implements Workable
+class Tester implements CanCodeInterface,TesterInterface
 {
     public function canCode()
     {
@@ -40,12 +50,16 @@ class Tester implements Workable
     }
 }
 
-class ProjectManagement
+class ProjectManagement implements CanCodeInterface,ProjectInterface
 {
-    public function processCode(Workable $member)
+
+    public function canCode()
     {
-        if ($member->canCode()) {
-            $member->code();
-        }
+        return false;
+    }
+
+    public function createNew()
+    {
+        // TODO: Implement createNew() method.
     }
 }

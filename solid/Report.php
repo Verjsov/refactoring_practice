@@ -1,6 +1,12 @@
 <?php
 
 //Hint - use Single Responsibility Principle Violation
+
+interface OutputInterface
+{
+    public function formatingRepo();
+}
+
 class Report
 {
     public function getTitle()
@@ -20,9 +26,19 @@ class Report
             'date' => $this->getDate(),
         ];
     }
+}
 
-    public function formatJson()
+class ReportJson implements OutputInterface
+{
+    protected $repo;
+
+    public function __construct(Report $repo)
     {
-        return json_encode($this->getContents());
+        $this->repo = $repo;
+    }
+
+    public function formatingRepo()
+    {
+        return json_encode($this->repo->getContents());
     }
 }

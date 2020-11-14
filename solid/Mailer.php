@@ -29,7 +29,7 @@ class Mailer implements MailerConnection
 class SendWelcomeMessage
 {
     private $mailer;
-    public function __construct(Mailer $mailer)
+    public function __construct(MailerConnection $mailer)
     {
         $this->mailer = $mailer;
     }

@@ -1,79 +1,120 @@
 <?php
 
 //Hint - Liskov Substitution Principle
-class Rectangle
+
+interface Figure
+{
+    public function setHeight(int $height) : void;
+
+    public function getHeight() : int;
+
+    public function setWidth(int $width) : void;
+
+    public function getWidth() : int;
+
+    public function area() :int;
+
+}
+
+trait BaseFigureTrait
 {
     protected $width;
     protected $height;
 
-    public function setHeight($height)
-    {
-        $this->height = $height;
-    }
-
-    public function getHeight()
+    public function getHeight() :int
     {
         return $this->height;
     }
 
-    public function setWidth($width)
+    public function getWidth() :int
+    {
+        return $this->width;
+    }
+}
+
+class Rectangle implements Figure
+{
+    use BaseFigureTrait;
+
+    public function setHeight($height) :void
+    {
+        $this->height = $height;
+    }
+
+    public function setWidth($width) :void
     {
         $this->width = $width;
     }
 
-    public function getWidth()
-    {
-        return $this->width;
-    }
-
-    public function area()
+    public function area() :int
     {
         return $this->height * $this->width;
     }
 }
 
-class Square extends Rectangle
+class Square implements Figure
 {
-    public function setHeight($value)
+    use BaseFigureTrait;
+
+    public function setHeight($value) :void
     {
         $this->width = $value;
         $this->height = $value;
     }
 
-    public function setWidth($value)
+    public function setWidth($value) :void
     {
         $this->width = $value;
         $this->height = $value;
+    }
+
+    public function area() :int
+    {
+        return (int) (pi()*pow($this->height,2))/4;
     }
 }
 
-class RectangleTest
+class FigureTest
 {
-    private $rectangle;
+    private Figure $baseFigure;
 
-    public function __construct(Rectangle $rectangle)
+    public function __construct(Figure $baseFigure)
     {
-        $this->rectangle = $rectangle;
+        $this->baseFigure = $baseFigure;
     }
 
-    public function testArea()
+    public function testArea() : string
     {
-        $this->rectangle->setHeight(2);
-        $this->rectangle->setWidth(3);
-        if ($this->rectangle->area() !== 6) {
-            return "Bad area \n";
-        } else {
-            return "Test passed! \n";
+        $this->baseFigure->setHeight(2);
+        $this->baseFigure->setWidth(3);
+        if ($this->baseFigure instanceof Square){
+            return $this->baseFigure->area() !== 7
+                ? "Bad area \n"
+                : "Test passed! \n";
         }
+        if ($this->baseFigure instanceof Rectangle){
+            return $this->baseFigure->area() !== 6
+                ? "Bad area \n"
+                : "Test passed! \n";
+        }
+        throw new Exception('Unknown type Figure');
     }
 }
 
 $rectangle = new Rectangle();
 echo "Calc area for rectangle \n";
-$rectangleTest = new RectangleTest($rectangle);
-echo $rectangleTest->testArea();
+$rectangleTest = new FigureTest($rectangle);
+try {
+   echo $rectangleTest->testArea();
+} catch (Exception $e){
+    echo $e->getMessage();
+}
 
 $square = new Square();
 echo "Calc area for square \n";
-$rectangleTest = new RectangleTest($square);
-echo $rectangleTest->testArea();
+$rectangleTest = new FigureTest($square);
+try {
+    echo $rectangleTest->testArea();
+} catch (Exception $e){
+    echo $e->getMessage();
+}

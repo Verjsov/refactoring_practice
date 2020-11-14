@@ -1,23 +1,28 @@
 <?php
 
-//Hint - Open Closed Principle
-class AnotherProgrammer
+interface WorkingInterface
 {
-    public function code()
+    public function working():string;
+}
+
+//Hint - Open Closed Principle
+class AnotherProgrammer implements WorkingInterface
+{
+    public function working():string
     {
         return 'coding';
     }
 }
-class Tester
+class Tester implements WorkingInterface
 {
-    public function test()
+    public function working():string
     {
         return 'testing';
     }
 }
-class Designer
+class Designer implements WorkingInterface
 {
-    public function draw()
+    public function working():string
     {
         return 'drawing';
     }
@@ -27,17 +32,9 @@ class Designer
 
 class ProjectManagement
 {
-    public function process($member)
+    public function process(WorkingInterface $member)
     {
-        if ($member instanceof AnotherProgrammer) {
-            $member->code();
-        } elseif ($member instanceof Tester) {
-            $member->test();
-        } elseif ($member instanceof Designer) {
-            $member->draw();
-        } else {
-            throw new Exception('Invalid input member');
-        }
+        return $member->working();
     }
 }
 

@@ -1,12 +1,19 @@
 <?php
 
+interface MailerConnect
+{
+    public function setHost(string $host): void;
+    public function setUser(string $user): void;
+    public function setPassword(string $password): void;
+    public function connection (): string;
+}
+
 class Mailer
 {
-
     private $mailer;
-    private $mail;
+    private array $mail;
 
-    public function setMailer (GoogleMailer $mailer )
+    public function setMailer (MailerConnect $mailer )
     {
         $this->mailer = $mailer;
     }
@@ -31,9 +38,9 @@ class Mailer
     }
 }
 
-class GoogleMailer
+class GoogleMailer implements MailerConnect
 {
-    private $settings = [];
+    private array $settings;
 
     public function __construct($settings = null)
     {
@@ -41,32 +48,38 @@ class GoogleMailer
             $this->settings['host'] = $settings['host'];
             $this->settings['user'] = $settings['user'];
             $this->settings['password'] = $settings['password'];
+        } else {
+            throw new Exception('Not found config data');
         }
     }
-    public function setHost(string $host)
+
+    public function connection (): string
+    {
+        return 'Successful';
+    }
+    
+    public function setHost(string $host): void
     {
         $this->settings['host'] = $host;
     }
 
-    public function setUser(string $user) {
+    public function setUser(string $user): void
+    {
         $this->settings['user'] = $user;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(string $password): void
     {
         $this->settings['password'] = $password;
     }
 }
 
-$googleMailer = new GoogleMailer(['host' => 'smtp.google.com', 'user' => 'test', 'password' => 'testpass']);
-$mailer = new Mailer();
-$mailer->setMailer($googleMailer);
-$mailer->compose('test@mail.com', 'student@mail.com', 'Welcome', 'Welcome message');
 try {
+    $googleMailer = new GoogleMailer(['host' => 'smtp.google.com', 'user' => 'test', 'password' => 'testpass']);
+    $mailer = new Mailer();
+    $mailer->setMailer($googleMailer);
+    $mailer->compose('test@mail.com', 'student@mail.com', 'Welcome', 'Welcome message');
     echo $mailer->send();
 } catch (Exception $exception){
     echo $exception->getMessage();
 }
-
-
-

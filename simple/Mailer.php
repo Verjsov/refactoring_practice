@@ -1,6 +1,6 @@
 <?php
 
-interface MailerConnect
+interface MailerConnectionInterface
 {
     public function setHost(string $host): void;
     public function setUser(string $user): void;
@@ -13,7 +13,7 @@ class Mailer
     private $mailer;
     private array $mail;
 
-    public function setMailer (MailerConnect $mailer )
+    public function setMailer (MailerConnectionInterface $mailer )
     {
         $this->mailer = $mailer;
     }
@@ -38,7 +38,7 @@ class Mailer
     }
 }
 
-class GoogleMailer implements MailerConnect
+class GoogleMailer implements MailerConnectionInterface
 {
     private array $settings;
 

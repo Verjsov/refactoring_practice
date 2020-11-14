@@ -3,15 +3,15 @@
 class Mailer
 {
 
-    protected $mailer;
-    protected $mail;
+    private $mailer;
+    private $mail;
 
-    function setMailer (GoogleMailer $mailer )
+    public function setMailer (GoogleMailer $mailer )
     {
         $this->mailer = $mailer;
     }
 
-    function compose ($to, $from, $body, $subject)
+    public function compose ($to, $from, $body, $subject)
     {
     $this->mail = [
         'to' => $to,
